@@ -17,27 +17,27 @@ class Item
     /**
      * @var int
      */
-    private int $id;
+    private $id;
 
     /**
      * @var Product
      */
-    private Product $product;
+    private $product;
 
     /**
      * @var int
      */
-    private int $quantity;
+    private $quantity;
 
     /**
      * @var int
      */
-    private int $totalPrice;
+    private $totalPrice;
 
     /**
      * @var CalcTotalItemPrice
      */
-    private CalcTotalItemPrice $calcTotalItemPrice;
+    private $calcTotalItemPrice;
 
     /**
      * Item constructor.
@@ -46,15 +46,16 @@ class Item
      */
     public function __construct(Product $product, int $quantity)
     {
+        $this->product = $product;
+
         if ($product->getMinimumQuantity() > $quantity) {
             throw new QuantityTooLowException($this->product);
         }
 
-        $this->product = $product;
         $this->quantity = $quantity;
         $this->calcTotalItemPrice = new CalcTotalItemPrice();
 
-        $this->calcTotalItemPrice->calcTotalPrice($this);
+        $this->totalPrice = $this->calcTotalItemPrice->calcTotalPrice($this);
     }
 
     /**
@@ -84,7 +85,10 @@ class Item
         }
 
         $this->quantity = $quantity;
-        $this->totalPrice = $this->calcTotalItemPrice->calcTotalPrice($this);
+
+        if($this->product->getPrice() && $this->getQuantity()) {
+            $this->totalPrice = $this->calcTotalItemPrice->calcTotalPrice($this);
+        }
 
         return $this;
     }

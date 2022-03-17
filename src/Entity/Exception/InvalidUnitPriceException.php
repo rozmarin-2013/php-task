@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Recruitment\Entity\Exception;
 
-use LogicException;
-
-class InvalidUnitPriceException extends LogicException
+class InvalidUnitPriceException extends \InvalidArgumentException
 {
     public function __construct()
     {

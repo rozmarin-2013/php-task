@@ -16,12 +16,12 @@ class Items
     /**
      * @var array
      */
-    private array $items = [];
+    private $items = [];
 
     /**
      * @var Order
      */
-    private Order $order;
+    private $order;
 
     /**
      * Items constructor.
@@ -38,8 +38,10 @@ class Items
      */
     public function addItem(Product $product, int $count)
     {
-       if ($this->getItem($product->getId())) {
-            $this->updateQuantityOnExistingProduct($product, $count);
+        $item = $this->getItemByProduct($product);
+
+       if ($this->getItemByProduct($product)) {
+            $this->updateQuantityOnExistingProduct($product, $item->getQuantity() + $count);
        } else {
            $this->createItem($product, $count);
        }
@@ -59,9 +61,29 @@ class Items
      * @param int $index
      * @return Item|null
      */
+    public function getItemByProduct(Product $product): ?Item
+    {
+        $items = $this->items;
+
+        /** @var Item $item */
+        foreach ($items as $item) {
+            if ($item->getProduct()->getId() === $product->getId()) {
+                return $item;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param int $index
+     * @return Item|null
+     */
     public function getItem(int $index): ?Item
     {
-        return array_key_exists($index, $this->items) ? $this->items[$index] : null;
+        $items = $this->items;
+
+        return isset($items[$index]) ? $items[$index] : null;
     }
 
     /**
@@ -69,10 +91,17 @@ class Items
      */
     public function removeItem(Product $product): void
     {
-        $index = $product->getId();
+        $items = $this->items;
 
-        if ($this->getItem($index)) {
-            unset($this->items[$index]);
+        /**
+         * @var int $key
+         * @var  Item $item
+         */
+        foreach ($items as $key=>$item) {
+            if ($item->getProduct()->getId() === $product->getId()) {
+                array_splice($this->items, $key, 1);
+                break;
+            }
         }
 
         $this->notifyOrder();
@@ -82,11 +111,12 @@ class Items
      * @param Product $product
      * @param int $count
      */
-    private function updateQuantityOnExistingProduct(Product $product, int $count): void
+    public function updateQuantityOnExistingProduct(Product $product, int $count): void
     {
-        if ($this->getItem($product->getId())) {
-            $this->items[$product->getId()]->setQuantity($count);
+        $item = $this->getItemByProduct($product);
 
+        if ($item) {
+            $item->setQuantity($count);
             $this->notifyOrder();
         }
     }
@@ -97,7 +127,13 @@ class Items
      */
     private function createItem(Product $product, int $count): void
     {
-        $this->items[$product->getId()] = new Item($product, $count);
+        $index = 0;
+        if (count($this->items)) {
+            end($this->items);
+            $index = key($this->items) + 1;
+        }
+
+        $this->items[$index] = new Item($product, $count);
 
         $this->notifyOrder();
     }
@@ -110,7 +146,7 @@ class Items
         return array_map(
             function (Item $item){
                 return [
-                    'id' => $item->getId(),
+                    'id' => $item->getProduct()->getId(),
                     'quantity' => $item->getQuantity(),
                     'total_price' => $item->getTotalPrice()
                 ];

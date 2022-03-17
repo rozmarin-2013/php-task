@@ -15,22 +15,22 @@ class Product
     /**
      * @var integer
      */
-    private integer $id;
+    private $id;
 
     /**
      * @var string
      */
-    private string $title;
+    private $title;
 
     /**
      * @var float
      */
-    private float $price;
+    private $price;
 
     /**
      * @var int
      */
-    private int $minimumQuantity;
+    private $minimumQuantity = 1;
 
     /**
      * @param float $price
@@ -49,7 +49,7 @@ class Product
     /**
      * @return float
      */
-    public function getPrice(): float
+    public function getPrice(): ?float
     {
         return $this->price;
     }
@@ -57,7 +57,7 @@ class Product
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -73,7 +73,7 @@ class Product
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -103,7 +103,7 @@ class Product
     public function setMinimumQuantity(int $quantity): self
     {
         if ($quantity < 1) {
-            throw new \LogicException("Quantity must be greater than 1");
+            throw new \InvalidArgumentException("Quantity must be greater than 1");
         }
 
         $this->minimumQuantity = $quantity;

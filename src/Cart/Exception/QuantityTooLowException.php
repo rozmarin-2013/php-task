@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Recruitment\Cart\Exception;
 
-use LogicException;
 use Recruitment\Entity\Product;
 
-class QuantityTooLowException extends LogicException
+class QuantityTooLowException extends \InvalidArgumentException
 {
     public function __construct(Product $product)
     {

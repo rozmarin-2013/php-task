@@ -17,27 +17,27 @@ class Order
     /**
      * @var int|string|null
      */
-    private  int $id;
+    private $id;
 
     /**
      * @var Items
      */
-    private Items $items;
+    private $items;
 
     /**
      * @var float|int
      */
-    private float $totalPrice = 0;
+    private $totalPrice = 0;
 
     /**
      * @var \Recruitment\Entity\OrderStatusType
      */
-    private OrderStatusType $orderStatusType;
+    private $orderStatusType;
 
     /**
      * @var CalcTotalPriceForAllIemsInterface
      */
-    private CalcTotalPriceForAllIemsInterface $calcTotalPriceForAllIems;
+    private $calcTotalPriceForAllIems;
 
     /**
      * Order constructor.
@@ -48,10 +48,15 @@ class Order
         $this->calcTotalPriceForAllIems = $calcTotalPriceForAllIems;
         $this->items = new Items($this);
 
-        $orders = Orders::getInstance();
-        end($orders);
-        $orderId = key($orders);
-        $this->id = $orderId + 1;
+        $orderId = 0;
+        $orders = Orders::getInstance()->getOrders();
+
+        if(count($orders)) {
+            end($orders);
+            $orderId = key($orders) +1;
+        }
+
+        $this->id = $orderId;
     }
 
     /**
@@ -68,6 +73,7 @@ class Order
     public function setItems(Items $items): void
     {
         $this->items = $items;
+        $this->calcTotalPrice();
     }
 
     /**
@@ -78,7 +84,7 @@ class Order
         return [
             'id' => $this->id,
             'items' => $this->items->getDataForView(),
-
+            'total_price' => $this->totalPrice
         ];
     }
 

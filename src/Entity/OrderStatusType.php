@@ -12,7 +12,7 @@ namespace Recruitment\Entity;
 class OrderStatusType
 {
     /** @ORM\Column(type="string") */
-    private string $orderStatus;
+    private $orderStatus;
 
     /**
      * OrderStatusType constructor.
