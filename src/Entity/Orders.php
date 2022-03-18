@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Recruitment\Entity;
 
-use Recruitment\Cart\Item;
 use Recruitment\Cart\Items;
 use Recruitment\Cart\Sevices\CalcCartServices;
 

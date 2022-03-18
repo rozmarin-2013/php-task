@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Recruitment\Entity;
 
-
 /**
  * Class OrderStatusType
  * @package Recruitment\Entity

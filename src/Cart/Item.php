@@ -86,7 +86,7 @@ class Item
 
         $this->quantity = $quantity;
 
-        if($this->product->getPrice() && $this->getQuantity()) {
+        if ($this->product->getPrice() && $this->getQuantity()) {
             $this->totalPrice = $this->calcTotalItemPrice->calcTotalPrice($this);
         }
 

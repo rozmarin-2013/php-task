@@ -6,7 +6,6 @@ namespace Recruitment\Entity;
 
 use Recruitment\Cart\Sevices\CalcTotalPriceForAllIemsInterface;
 use Recruitment\Cart\Items;
-use Recruitment\Entity\OrderStatusType;
 
 /**
  * Class Order
@@ -51,7 +50,7 @@ class Order
         $orderId = 0;
         $orders = Orders::getInstance()->getOrders();
 
-        if(count($orders)) {
+        if (count($orders)) {
             end($orders);
             $orderId = key($orders) +1;
         }

@@ -38,7 +38,7 @@ class Product
     public function setUnitPrice(float $price)
     {
         if ($price <= 0) {
-           throw new InvalidUnitPriceException();
+            throw new InvalidUnitPriceException();
         }
 
         $this->price = $price;

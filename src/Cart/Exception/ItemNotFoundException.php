@@ -10,7 +10,7 @@ class ItemNotFoundException extends LogicException
 {
     public function __construct(int $index)
     {
-        $message = sprintf('Item with index %d not found',$index);
+        $message = sprintf('Item with index %d not found', $index);
 
         parent::__construct($message);
     }

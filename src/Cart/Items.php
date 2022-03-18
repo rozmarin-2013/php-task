@@ -40,13 +40,13 @@ class Items
     {
         $item = $this->getItemByProduct($product);
 
-       if ($this->getItemByProduct($product)) {
+        if ($this->getItemByProduct($product)) {
             $this->updateQuantityOnExistingProduct($product, $item->getQuantity() + $count);
-       } else {
-           $this->createItem($product, $count);
-       }
+        } else {
+            $this->createItem($product, $count);
+        }
 
-       $this->notifyOrder();
+        $this->notifyOrder();
     }
 
     /**
@@ -97,7 +97,7 @@ class Items
          * @var int $key
          * @var  Item $item
          */
-        foreach ($items as $key=>$item) {
+        foreach ($items as $key => $item) {
             if ($item->getProduct()->getId() === $product->getId()) {
                 array_splice($this->items, $key, 1);
                 break;
@@ -144,7 +144,7 @@ class Items
     public function getDataForView(): array
     {
         return array_map(
-            function (Item $item){
+            function (Item $item) {
                 return [
                     'id' => $item->getProduct()->getId(),
                     'quantity' => $item->getQuantity(),
