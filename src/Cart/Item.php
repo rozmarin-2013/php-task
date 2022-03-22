@@ -30,9 +30,14 @@ class Item
     private $quantity;
 
     /**
-     * @var int
+     * @var float
      */
     private $totalPrice;
+
+    /**
+     * @var float
+     */
+    private $brutoTotalPrice;
 
     /**
      * @var CalcTotalItemPrice
@@ -55,7 +60,7 @@ class Item
         $this->quantity = $quantity;
         $this->calcTotalItemPrice = new CalcTotalItemPrice();
 
-        $this->totalPrice = $this->calcTotalItemPrice->calcTotalPrice($this);
+        $this->calcAllTotalPrices();
     }
 
     /**
@@ -87,7 +92,7 @@ class Item
         $this->quantity = $quantity;
 
         if ($this->product->getPrice() && $this->getQuantity()) {
-            $this->totalPrice = $this->calcTotalItemPrice->calcTotalPrice($this);
+            $this->calcAllTotalPrices();
         }
 
         return $this;
@@ -115,5 +120,19 @@ class Item
     public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    private function calcAllTotalPrices(): void
+    {
+        $this->totalPrice = $this->calcTotalItemPrice->calcTotalPrice($this);
+        $this->brutoTotalPrice = $this->calcTotalItemPrice->calcTotalPriceWithTax($this);
+    }
+
+    /**
+     * @return float
+     */
+    public function getBrutoTotalPrice(): float
+    {
+        return $this->brutoTotalPrice;
     }
 }

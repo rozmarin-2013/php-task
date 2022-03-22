@@ -94,8 +94,20 @@ class Orders
             $order->setId(7);
 
             $items = new Items($order);
-            $items->addItem((new Product())->setId(1)->setUnitPrice(15000), 1);
-            $items->addItem((new Product())->setId(2)->setUnitPrice(10000), 2);
+            $items->addItem(
+                (new Product())
+                    ->setId(1)
+                    ->setUnitPrice(15000)
+                    ->setTax(new ProductVatType(8)),
+                1
+            );
+            $items->addItem(
+                (new Product())
+                    ->setId(2)
+                    ->setUnitPrice(10000)
+                    ->setTax(new ProductVatType(0)),
+                2
+            );
 
             $order->setItems($items);
             $this->addOrder($order);

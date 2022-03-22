@@ -148,7 +148,9 @@ class Items
                 return [
                     'id' => $item->getProduct()->getId(),
                     'quantity' => $item->getQuantity(),
-                    'total_price' => $item->getTotalPrice()
+                    'total_price' => $item->getTotalPrice(),
+                    'vat' => $item->getProduct()->getVat(),
+                    'total_price_gross' => $item->getBrutoTotalPrice()
                 ];
             },
             $this->items
@@ -157,6 +159,6 @@ class Items
 
     private function notifyOrder(): void
     {
-        $this->order->calcTotalPrice();
+        $this->order->calcAllPrice();
     }
 }

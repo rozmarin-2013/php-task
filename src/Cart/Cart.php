@@ -109,6 +109,14 @@ class Cart
     }
 
     /**
+     * @return float
+     */
+    public function getTotalPriceGross(): float
+    {
+        return ($this->order) ? $this->order->getTotalPriceGross() : 0;
+    }
+
+    /**
      * @param int $orderId
      * @return Order|null
      */

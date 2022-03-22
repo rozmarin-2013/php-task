@@ -7,14 +7,20 @@ namespace Recruitment\Cart\Sevices;
 use Recruitment\Cart\Items;
 
 /**
- * Interface CalcTotalPriceForAllIemsInterface
+ * Interface CalcTotalPriceForAllItemsInterface
  * @package Recruitment\Cart\Sevices
  */
-interface CalcTotalPriceForAllIemsInterface
+interface CalcTotalPriceForAllItemsInterface
 {
     /**
      * @param Items $items
      * @return float
      */
     public function calcTotalPrice(Items $items): float;
+
+    /**
+     * @param Items $items
+     * @return float
+     */
+    public function calcTotalPriceGross(Items $items): float;
 }

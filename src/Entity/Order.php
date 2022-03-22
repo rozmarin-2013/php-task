@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Recruitment\Entity;
 
-use Recruitment\Cart\Sevices\CalcTotalPriceForAllIemsInterface;
+use Recruitment\Cart\Sevices\CalcTotalPriceForAllItemsInterface;
 use Recruitment\Cart\Items;
 
 /**
@@ -24,9 +24,14 @@ class Order
     private $items;
 
     /**
-     * @var float|int
+     * @var float
      */
     private $totalPrice = 0;
+
+    /**
+     * @var float
+     */
+    private $totalPriceGross = 0;
 
     /**
      * @var \Recruitment\Entity\OrderStatusType
@@ -34,15 +39,15 @@ class Order
     private $orderStatusType;
 
     /**
-     * @var CalcTotalPriceForAllIemsInterface
+     * @var CalcTotalPriceForAllItemsInterface
      */
     private $calcTotalPriceForAllIems;
 
     /**
      * Order constructor.
-     * @param CalcTotalPriceForAllIemsInterface $calcTotalPriceForAllIems
+     * @param CalcTotalPriceForAllItemsInterface $calcTotalPriceForAllIems
      */
-    public function __construct(CalcTotalPriceForAllIemsInterface $calcTotalPriceForAllIems)
+    public function __construct(CalcTotalPriceForAllItemsInterface $calcTotalPriceForAllIems)
     {
         $this->calcTotalPriceForAllIems = $calcTotalPriceForAllIems;
         $this->items = new Items($this);
@@ -72,7 +77,7 @@ class Order
     public function setItems(Items $items): void
     {
         $this->items = $items;
-        $this->calcTotalPrice();
+        $this->calcAllPrice();
     }
 
     /**
@@ -83,7 +88,8 @@ class Order
         return [
             'id' => $this->id,
             'items' => $this->items->getDataForView(),
-            'total_price' => $this->totalPrice
+            'total_price' => $this->totalPrice,
+            'total_price_gross' => $this->totalPriceGross
         ];
     }
 
@@ -113,6 +119,15 @@ class Order
         return $this->totalPrice;
     }
 
+    /**
+     * @return float
+     */
+    public function calcTotalPriceGross(): float
+    {
+        $this->totalPriceGross = $this->calcTotalPriceForAllIems->calcTotalPriceGross($this->items);
+
+        return $this->totalPriceGross;
+    }
     /**
      *
      */
@@ -149,10 +164,16 @@ class Order
     }
 
     /**
-     * @param float $totalPrice
+     * @return float
      */
-    public function setTotalPrice(float $totalPrice): void
+    public function getTotalPriceGross(): float
     {
-        $this->totalPrice = $totalPrice;
+        return $this->totalPriceGross;
+    }
+
+    public function calcAllPrice(): void
+    {
+        $this->calcTotalPrice();
+        $this->calcTotalPriceGross();
     }
 }

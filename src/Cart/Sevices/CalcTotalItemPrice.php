@@ -20,4 +20,13 @@ class CalcTotalItemPrice
     {
         return $item->getQuantity() * $item->getProduct()->getPrice();
     }
+
+    /**
+     * @param Item $item
+     * @return float|int
+     */
+    public function calcTotalPriceWithTax(Item $item)
+    {
+        return $item->getQuantity() * $item->getProduct()->getPriceWithVat();
+    }
 }

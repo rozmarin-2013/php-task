@@ -7,6 +7,7 @@ namespace Recruitment\Tests\Cart;
 use PHPUnit\Framework\TestCase;
 use Recruitment\Cart\Item;
 use Recruitment\Entity\Product;
+use Recruitment\Entity\ProductVatType;
 
 class ItemTest extends TestCase
 {
@@ -15,12 +16,13 @@ class ItemTest extends TestCase
      */
     public function itAcceptsConstructorArgumentsAndReturnsData(): void
     {
-        $product = (new Product())->setUnitPrice(10000);
+        $product = (new Product())->setUnitPrice(10000)->setTax(new ProductVatType(5));
 
         $item = new Item($product, 10);
 
         $this->assertEquals($product, $item->getProduct());
         $this->assertEquals(10, $item->getQuantity());
+        $this->assertEquals(105000, $item->getBrutoTotalPrice());
         $this->assertEquals(100000, $item->getTotalPrice());
     }
 
